@@ -24,8 +24,8 @@ def get_or_create(model, will_commit=False, **kwargs):
         if given_creator:
             kwargs["creator"] = given_creator
         else:
-            admin = (db.session.query(Librarian)
-              .filter(Librarian.username=='admin').first())
+            admin = (db.session.query(User)
+              .filter(User.username=='admin').first())
             kwargs["creator"] = admin
 
         instance = model(**kwargs)

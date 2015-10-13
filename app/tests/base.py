@@ -14,6 +14,8 @@ class AppTestCase(TestCase):
         return app.app
     
     def setUp(self):
+        self.admin_user = get_or_create(User, will_commit = True, username="admin",
+          password="admin", can_read=True, can_write=True, can_exec=True)
         app.db.session.flush()
 
     def verify_inserted(self, model, **kwargs):

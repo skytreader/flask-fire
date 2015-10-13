@@ -16,6 +16,7 @@ def index():
 @app_bp.route("/login/", methods=["GET", "POST"])
 def login():
     form = LoginForm()
+    app.app.logger.info(str(form))
 
     if form.validate_on_submit():
         from models import User
@@ -35,6 +36,11 @@ def login():
 
     return render_template("login.jinja", form=form)
 
+@app_bp.route("/dashboard")
+@login_required
+def dash():
+    return ""
+    
 @app_bp.route("/logout")
 @login_required
 def logout():
