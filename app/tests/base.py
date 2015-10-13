@@ -1,17 +1,17 @@
 from flask.ext.testing import TestCase
-from app.models import get_or_create, User, Role
+from app.models import get_or_create, User
 import app
 import logging
 import unittest
 
 app.app.config["TESTING"] = True
-app.init_db(librarian.app.config["SQLALCHEMY_TEST_DATABASE_URI"])
+app.init_db(app.app.config["SQLALCHEMY_TEST_DATABASE_URI"])
 app.init_blueprints()
 
 class AppTestCase(TestCase):
     
     def create_app(self):
-        return librarian.app
+        return app.app
     
     def setUp(self):
         app.db.session.flush()

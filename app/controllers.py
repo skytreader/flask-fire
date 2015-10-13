@@ -5,15 +5,15 @@ from utils import route_exists
 
 import config
 import flask
-import librarian
+import app
 
-app_bp = Blueprint('librarian', __name__)
+app_bp = Blueprint('app', __name__)
 
 @app_bp.route("/")
 def index():
     return render_template("main.jinja")
 
-@librarian_bp.route("/login/", methods=["GET", "POST"])
+@app_bp.route("/login/", methods=["GET", "POST"])
 def login():
     form = LoginForm()
 
@@ -29,13 +29,13 @@ def login():
             if next_url and not route_exists(next_url):
                 return flask.abort(400)
 
-            return redirect(next_url or url_for("librarian.dash"), code=302)
+            return redirect(next_url or url_for("app.dash"), code=302)
         else:
             flash("Wrong user credentials")
 
     return render_template("login.jinja", form=form)
 
-@librarian_bp.route("/logout")
+@app_bp.route("/logout")
 @login_required
 def logout():
     logout_user()

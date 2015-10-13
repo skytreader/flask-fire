@@ -1,4 +1,4 @@
-from controllers import librarian_bp
+from controllers import app_bp
 from flask import Flask
 from flask.ext.login import LoginManager
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -17,9 +17,9 @@ def init_db(sql_string=None):
     db.session.commit()
 
 def init_blueprints():
-    app.register_blueprint(librarian_bp)
-    from api import librarian_api
-    app.register_blueprint(librarian_api)
+    app.register_blueprint(app_bp)
+    from api import app_api
+    app.register_blueprint(app_api)
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -27,5 +27,5 @@ login_manager.login_view = "controllers.login"
 
 @login_manager.user_loader
 def load_user(userid):
-    from models import Librarian
-    return Librarian.query.filter_by(id=userid).first()
+    from models import User
+    return User.query.filter_by(id=userid).first()
