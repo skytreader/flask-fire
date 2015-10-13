@@ -15,6 +15,6 @@ import traceback
 app_api = Blueprint("app_api", __name__)
 
 
-@app_api.route("/api/util/servertime")
+@app_api.route("/api/util/time")
 def servertime():
     return {"now": str(datetime.now(tz=pytz.utc).isoformat())}

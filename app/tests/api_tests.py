@@ -19,6 +19,7 @@ class ApiTests(AppTestCase):
         super(ApiTests, self).setUp()
 
     def test_servertime(self):
+        app.app.logger.info("self client is" + str(self.client.get("/api/util/time")))
         servertime = self.client.get("/api/util/servertime")
         self.assertEquals(servertime._status_code, 200)
         data = json.loads(servertime.data)
