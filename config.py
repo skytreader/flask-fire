@@ -14,8 +14,8 @@ TESTING = bool(os.environ.get("TESTING"))
 import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))  
 
-SQLALCHEMY_DATABASE_URI = 'mysql://root@127.0.0.1/alexandria'
-SQLALCHEMY_TEST_DATABASE_URI = 'mysql://root@127.0.0.1/alexandria_test'
+SQLALCHEMY_DATABASE_URI = 'mysql://root@127.0.0.1/app'
+SQLALCHEMY_TEST_DATABASE_URI = 'mysql://root@127.0.0.1/app_test'
 SQLALCHEMY_ECHO = DEVEL
 DATABASE_CONNECT_OPTIONS = {"user":"root"}
 
