@@ -22,7 +22,7 @@ def init_blueprints():
     main.register_blueprint(main_api)
 
 login_manager = LoginManager()
-login_manager.init_main(main)
+login_manager.init_app(main)
 login_manager.login_view = "controllers.login"
 
 @login_manager.user_loader

@@ -10,7 +10,7 @@ main.init_blueprints()
 
 class AppTestCase(TestCase):
     
-    def create_main(self):
+    def create_app(self):
         return main.main
     
     def setUp(self):

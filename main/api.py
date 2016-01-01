@@ -1,5 +1,6 @@
 import json
 import pytz
+import flask
 
 from datetime import datetime
 
@@ -15,6 +16,6 @@ import traceback
 main_api = Blueprint("main_api", __name__)
 
 
-@main_api.route("/api/util/time")
+@main_api.route("/api/util/servertime")
 def servertime():
-    return {"now": str(datetime.now(tz=pytz.utc).isoformat())}
+    return flask.jsonify({"now": str(datetime.now(tz=pytz.utc).isoformat())})
