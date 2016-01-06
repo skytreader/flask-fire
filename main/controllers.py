@@ -15,11 +15,11 @@ def index():
 
 @main_bp.route("/login/", methods=["GET", "POST"])
 def login():
+    from flask.ext.login import current_user
+    from models import User
     form = LoginForm()
-    main.main.logger.info(str(form))
 
     if form.validate_on_submit():
-        from models import User
         user = User.query.filter_by(username=form.main_username.data,
           is_user_active=True).first()
 
@@ -33,6 +33,8 @@ def login():
             return redirect(next_url or url_for("main.dash"), code=302)
         else:
             flash("Wrong user credentials")
+    elif not current_user.is_anonymous():
+        return redirect(url_for("main.dash"))
 
     return render_template("login.jinja", form=form)
 
