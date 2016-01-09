@@ -9,3 +9,7 @@ Batteries (and examples) included to emphasize testing. Quick to set-up for
 hackathons.
 
 A more "complete" example is [over here](https://github.com/skytreader/alexandria).
+
+# License
+
+MIT
