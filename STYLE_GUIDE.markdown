@@ -29,3 +29,8 @@ exception is if a particular data/field comes from a server query in which case
 ## Python
 
 Follow [PEP8](https://www.python.org/dev/peps/pep-0008/).
+
+### SQLAlchemy
+
+Always explicitly name foreign key constraints so that they are easily refered
+to in migrations.
