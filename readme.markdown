@@ -10,6 +10,16 @@ hackathons.
 
 A more "complete" example is [over here](https://github.com/skytreader/alexandria).
 
+# Additional Bangs and Whizes
+
+The emphasis of this stack is for quick set-up (during hackathons, where internet
+might be shitty, if you did not set-up before going there) and for testability
+(which my be weird since _who writes unit tests during hackathons hahahagoodone_?).
+
+If you are creating something that will run for more than your 5-minute hackathon
+pitch, you may want to take a look (and install) the libraries in
+`more-requirements.txt`.
+
 # License
 
 MIT
