@@ -38,17 +38,22 @@ def get_or_create(model, will_commit=False, **kwargs):
 class Base(db.Model):
     __abstract__ = True
     id = db.Column(db.Integer, primary_key=True)
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
+    date_created = db.Column(db.DateTime, default=db.func.current_timestamp(),
+      server_default=db.func.current_timestamp())
     date_modified = db.Column(db.DateTime, default=db.func.current_timestamp(),
+      server_default=db.func.current_timestamp(),
       onupdate=db.func.current_timestamp())
 
 class User(Base, UserMixin):
     __tablename__ = "users"
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
-    can_read = db.Column(db.Boolean, nullable=False, default=False)
-    can_write = db.Column(db.Boolean, nullable=False, default=False)
-    can_exec = db.Column(db.Boolean, nullable=False, default=False)
+    can_read = db.Column(db.Boolean, nullable=False, default=False,
+      server_default=db.func.current_timestamp())
+    can_write = db.Column(db.Boolean, nullable=False, default=False,
+      server_default=db.func.current_timestamp())
+    can_exec = db.Column(db.Boolean, nullable=False, default=False,
+      server_default=db.func.current_timestamp())
     is_user_active = db.Column(db.Boolean, nullable=False, default=True)
 
     def __init__(self, **kwargs):
