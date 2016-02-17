@@ -32,5 +32,9 @@ Follow [PEP8](https://www.python.org/dev/peps/pep-0008/).
 
 ### SQLAlchemy
 
-Always explicitly name foreign key constraints so that they are easily refered
+Always explicitly name foreign key constraints so that they are easily referred
 to in migrations.
+
+When declaring columns, explicitly specify both `default` and `server_default`.
+The difference is that `default` is the value _Python_ automagically encounters
+while `server_default` is the value _the database_ automagically sets.
