@@ -49,13 +49,13 @@ class User(Base, UserMixin):
     username = db.Column(db.String(50), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
     can_read = db.Column(db.Boolean, nullable=False, default=False,
-      server_default=db.sql.expression.false())
+      server_default=db.false())
     can_write = db.Column(db.Boolean, nullable=False, default=False,
-      server_default=db.sql.expression.false())
+      server_default=db.false())
     can_exec = db.Column(db.Boolean, nullable=False, default=False,
-      server_default=db.sql.expression.false())
+      server_default=db.false())
     is_user_active = db.Column(db.Boolean, nullable=False, default=True,
-      server_default=db.sql.expression.true())
+      server_default=db.true())
 
     def __init__(self, **kwargs):
         self.username = kwargs["username"]
