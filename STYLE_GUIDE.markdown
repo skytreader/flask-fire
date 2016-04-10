@@ -39,6 +39,9 @@ All foreign key references should, as much as possible, be named as
 `<table-name>_<foreign-field>`. The hard rule is that it should be end with
 the foreign field it is using as FK.
 
+Foreign key fields should have a corresponding field in the model declared as
+a [relationship](http://docs.sqlalchemy.org/en/latest/orm/relationships.html).
+
 When declaring columns, explicitly specify both `default` and `server_default`.
 The difference is that `default` is the value _Python_ automagically encounters
 while `server_default` is the value _the database_ automagically sets.
