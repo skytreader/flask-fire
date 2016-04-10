@@ -35,6 +35,10 @@ Follow [PEP8](https://www.python.org/dev/peps/pep-0008/).
 Always explicitly name foreign key constraints so that they are easily referred
 to in migrations.
 
+All foreign key references should, as much as possible, be named as
+`<table-name>_<foreign-field>`. The hard rule is that it should be end with
+the foreign field it is using as FK.
+
 When declaring columns, explicitly specify both `default` and `server_default`.
 The difference is that `default` is the value _Python_ automagically encounters
 while `server_default` is the value _the database_ automagically sets.
