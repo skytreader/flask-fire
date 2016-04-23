@@ -17,10 +17,16 @@ type (no need to hold down shift) for identifiers
 ## JavaScript
 
 Refer to [Google's style guide](https://google.github.io/styleguide/javascriptguide.xml).
+Some specifics and/or deviations below. Document assumes that jQuery is used.
+Where Google's and this document diverges, this document prevails.
 
-Avoid reference to global variables, or assuming you can get a particular value
-in a DOM element identified by a particular selector. As much as possible, all
-global/DOM references are only in one place, e.g., `$(document).ready`.
+All event handlers should be bound in the `$(document).ready` of the script. The
+idea is that if you want to rewrite the frontend, you just need to create a new
+template (following the assumptions of the script regarding element identifiers
+and structure) and the script should still be mostly compatible with it.
+
+Documentation uses [JSDoc](http://usejsdoc.org/). The declarable types are
+JavaScript natives and [Mozilla Web API types](https://developer.mozilla.org/en-US/docs/Web/API).
 
 Use `camelCasing` as opposed to `snake_case`. `SHOUT_FOR_CONSTANTS`. A possible
 exception is if a particular data/field comes from a server query in which case
