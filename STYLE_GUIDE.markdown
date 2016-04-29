@@ -42,11 +42,19 @@ Always explicitly name foreign key constraints so that they are easily referred
 to in migrations.
 
 All foreign key references should, as much as possible, be named as
-`<table-name>_<foreign-field>`. The hard rule is that it should be end with
-the foreign field it is using as FK.
+`<table-name>_<foreign-field>`. Sometimes, using the table name is not feasible
+as one table may FK to another table more than once. In this case, be descriptive.
+The hard rule is that it should end with the foreign field it is using as FK.
 
 Foreign key fields should have a corresponding field in the model declared as
 a [relationship](http://docs.sqlalchemy.org/en/latest/orm/relationships.html).
+Note that, using this stack's `UserTaggedBase`, you have to explicitly declare
+the following fields in the classes inheriting from `UserTaggedBase`
+
+    class Example(UserTaggedBase):
+        ...
+        creator = relationship("User", foreign_keys="Example.creator_id")
+        last_modifier = relationship("User", foreign_keys="Example.last_modifier_id")
 
 When declaring columns, explicitly specify both `default` and `server_default`.
 The difference is that `default` is the value _Python_ automagically encounters
