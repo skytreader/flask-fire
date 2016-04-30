@@ -16,17 +16,17 @@ def get_or_create(model, will_commit=False, **kwargs):
     as the current user. If no user is logged-in when this is called, the admin
     user is used.
     """
-    given_creator = kwargs.pop("creator", None)
+    given_creator = kwargs.pop("creator_id", None)
     instance = db.session.query(model).filter_by(**kwargs).first()
     if instance:
         return instance
     else:
         if given_creator:
-            kwargs["creator"] = given_creator
+            kwargs["creator_id"] = given_creator
         else:
             admin = (db.session.query(User)
               .filter(User.username=='admin').first())
-            kwargs["creator"] = admin
+            kwargs["creator_id"] = admin
 
         instance = model(**kwargs)
         if will_commit:
@@ -80,9 +80,9 @@ class UserTaggedBase(Base):
     __abstract__ = True
 
     @declared_attr
-    def creator(self):
+    def creator_id(self):
         return db.Column(db.Integer, db.ForeignKey("users.id"))
 
     @declared_attr
-    def last_modifier(self):
+    def last_modifier_id(self):
         return db.Column(db.Integer, db.ForeignKey("users.id"))
