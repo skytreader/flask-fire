@@ -1,4 +1,6 @@
-from config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TEST_DATABASE_URI
+from config import (
+  DEVEL, SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TEST_DATABASE_URI, TESTING
+)
 from fabric.api import local
 from fixtures import insert_fixtures
 from sqlalchemy import create_engine
@@ -8,6 +10,19 @@ from sqlalchemy.orm import sessionmaker
 Update this file as you add database tables.
 """
 
+def __env_safeguard(fab_method):
+    """
+    This is not a fabric method per se. Useless to call this.
+    """
+    def check(*args, **kwargs):
+        if DEVEL or TESTING:
+            fab_method(*args, **kwargs)
+        else:
+            print "Prevented by env_guard"
+
+    return check
+
+@__env_guard
 def reset_db_data():
     engine = create_engine(SQLALCHEMY_DATABASE_URI)
     session = sessionmaker(bind=engine)()
@@ -19,6 +34,7 @@ def reset_db_data():
 
     insert_fixtures(engine, session)
 
+@__env_guard
 def destroy_db_tables():
     engine = create_engine(SQLALCHEMY_DATABASE_URI)
     session = sessionmaker(bind=engine)()
@@ -40,12 +56,14 @@ def manual_test_cleanup():
 def dbdump():
     local("mysqldump -u root app > app.sql")
 
+@__env_guard
 def destroy_database(is_test=False):
     if is_test:
         local('mysql -u root -e "DROP DATABASE app_test"')
     else:
         local('mysql -u root -e "DROP DATABASE app"')
 
+@__env_guard
 def create_database(is_test=False):
     if is_test: 
         local('mysql -u root -e "CREATE DATABASE app_test DEFAULT CHARACTER SET = utf8"')
