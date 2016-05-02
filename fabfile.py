@@ -63,7 +63,6 @@ def destroy_database(is_test=False):
     else:
         local('mysql -u root -e "DROP DATABASE app"')
 
-@__env_guard
 def create_database(is_test=False):
     if is_test: 
         local('mysql -u root -e "CREATE DATABASE app_test DEFAULT CHARACTER SET = utf8"')
