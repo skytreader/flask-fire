@@ -18,11 +18,11 @@ def __env_safeguard(fab_method):
         if DEVEL or TESTING:
             fab_method(*args, **kwargs)
         else:
-            print "Prevented by env_guard"
+            print "Prevented by env_safeguard"
 
     return check
 
-@__env_guard
+@__env_safeguard
 def reset_db_data():
     engine = create_engine(SQLALCHEMY_DATABASE_URI)
     session = sessionmaker(bind=engine)()
@@ -34,7 +34,7 @@ def reset_db_data():
 
     insert_fixtures(engine, session)
 
-@__env_guard
+@__env_safeguard
 def destroy_db_tables():
     engine = create_engine(SQLALCHEMY_DATABASE_URI)
     session = sessionmaker(bind=engine)()
@@ -56,7 +56,7 @@ def manual_test_cleanup():
 def dbdump():
     local("mysqldump -u root app > app.sql")
 
-@__env_guard
+@__env_safeguard
 def destroy_database(is_test=False):
     if is_test:
         local('mysql -u root -e "DROP DATABASE app_test"')
