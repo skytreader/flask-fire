@@ -32,6 +32,10 @@ Use `camelCasing` as opposed to `snake_case`. `SHOUT_FOR_CONSTANTS`. A possible
 exception is if a particular data/field comes from a server query in which case
 `snake_case` should be acceptable.
 
+### Other Related Links:
+
+1. [Google: Anotating JavaScript for the Closure Compiler](https://developers.google.com/closure/compiler/docs/js-for-compiler)
+
 ## Python
 
 Follow [PEP8](https://www.python.org/dev/peps/pep-0008/).
