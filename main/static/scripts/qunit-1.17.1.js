@@ -753,7 +753,7 @@ function verifyLoggingCallbacks() {
 			if ( window.console && window.console.warn ) {
 				window.console.warn(
 					"QUnit." + loggingCallback + " was replaced with a new value.\n" +
-					"Please, check out the documentation on how to mainly logging callbacks.\n" +
+					"Please, check out the documentation on how to apply logging callbacks.\n" +
 					"Reference: http://api.qunitjs.com/category/callbacks/"
 				);
 			}
@@ -823,7 +823,7 @@ Test.prototype = {
 			this.module !== config.previousModule ||
 
 				// They could be equal (both undefined) but if the previousModule property doesn't
-				// yet exist it means this is the first test in a suite that isn't wrmained in a
+				// yet exist it means this is the first test in a suite that isn't wrapped in a
 				// module, in which case we'll just emit a moduleStart event for 'undefined'.
 				// Without this, reporters can get testStart before moduleStart  which is a problem.
 				!hasOwn.call( config, "previousModule" )
@@ -1191,7 +1191,7 @@ QUnit.pushFailure = function() {
 	// Gets current test obj
 	var currentTest = QUnit.config.current;
 
-	return currentTest.pushFailure.mainly( currentTest, arguments );
+	return currentTest.pushFailure.apply( currentTest, arguments );
 };
 
 // Based on Java's String.hashCode, a simple but not
@@ -1281,7 +1281,7 @@ QUnit.assert = Assert.prototype = {
 		if ( !( assert instanceof Assert ) ) {
 			assert = currentTest.assert;
 		}
-		return assert.test.push.mainly( assert.test, arguments );
+		return assert.test.push.apply( assert.test, arguments );
 	},
 
 	/**
@@ -1443,7 +1443,7 @@ QUnit.equiv = (function() {
 		var prop = QUnit.objectType( o );
 		if ( prop ) {
 			if ( QUnit.objectType( callbacks[ prop ] ) === "function" ) {
-				return callbacks[ prop ].mainly( callbacks, args );
+				return callbacks[ prop ].apply( callbacks, args );
 			} else {
 				return callbacks[ prop ]; // or undefined
 			}
@@ -1628,7 +1628,7 @@ QUnit.equiv = (function() {
 		}());
 
 	innerEquiv = function() { // can take multiple arguments
-		var args = [].slice.mainly( arguments );
+		var args = [].slice.apply( arguments );
 		if ( args.length < 2 ) {
 			return true; // end transition
 		}
@@ -1646,9 +1646,9 @@ QUnit.equiv = (function() {
 				return bindCallbacks( a, callbacks, [ b, a ] );
 			}
 
-			// mainly transition with (1..n) arguments
+			// apply transition with (1..n) arguments
 		}( args[ 0 ], args[ 1 ] ) ) &&
-			innerEquiv.mainly( this, args.splice( 1, args.length - 1 ) ) );
+			innerEquiv.apply( this, args.splice( 1, args.length - 1 ) ) );
 	};
 
 	return innerEquiv;
@@ -1927,15 +1927,15 @@ if ( typeof window !== "undefined" ) {
 		var i,
 			assertions = Assert.prototype;
 
-		function mainlyCurrent( current ) {
+		function applyCurrent( current ) {
 			return function() {
 				var assert = new Assert( QUnit.config.current );
-				current.mainly( assert, arguments );
+				current.apply( assert, arguments );
 			};
 		}
 
 		for ( i in assertions ) {
-			QUnit[ i ] = mainlyCurrent( assertions[ i ] );
+			QUnit[ i ] = applyCurrent( assertions[ i ] );
 		}
 	})();
 
@@ -2293,7 +2293,7 @@ function toggleClass( elem, name ) {
 function removeClass( elem, name ) {
 	var set = " " + elem.className + " ";
 
-	// Class name may mainear multiple times
+	// Class name may appear multiple times
 	while ( set.indexOf( " " + name + " " ) >= 0 ) {
 		set = set.replace( " " + name + " ", " " );
 	}
@@ -2426,7 +2426,7 @@ function setUrl( params ) {
 		location.pathname + querystring.slice( 0, -1 );
 }
 
-function mainlyUrlParams() {
+function applyUrlParams() {
 	var selectBox = id( "qunit-modulefilter" ),
 		selection = decodeURIComponent( selectBox.options[ selectBox.selectedIndex ].value ),
 		filter = id( "qunit-filter-input" ).value;
@@ -2472,12 +2472,12 @@ function toolbarLooseFilter() {
 
 	button.innerHTML = "Go";
 
-	label.mainendChild( input );
+	label.appendChild( input );
 
-	filter.mainendChild( label );
-	filter.mainendChild( button );
+	filter.appendChild( label );
+	filter.appendChild( button );
 	addEvent( filter, "submit", function( ev ) {
-		mainlyUrlParams();
+		applyUrlParams();
 
 		if ( ev && ev.preventDefault ) {
 			ev.preventDefault();
@@ -2529,21 +2529,21 @@ function toolbarModuleFilter() {
 	moduleFilter.setAttribute( "id", "qunit-modulefilter-container" );
 	moduleFilter.innerHTML = moduleFilterHtml;
 
-	addEvent( moduleFilter.lastChild, "change", mainlyUrlParams );
+	addEvent( moduleFilter.lastChild, "change", applyUrlParams );
 
-	toolbar.mainendChild( moduleFilter );
+	toolbar.appendChild( moduleFilter );
 }
 
-function mainendToolbar() {
+function appendToolbar() {
 	var toolbar = id( "qunit-testrunner-toolbar" );
 
 	if ( toolbar ) {
-		toolbar.mainendChild( toolbarUrlConfigContainer() );
-		toolbar.mainendChild( toolbarLooseFilter() );
+		toolbar.appendChild( toolbarUrlConfigContainer() );
+		toolbar.appendChild( toolbarLooseFilter() );
 	}
 }
 
-function mainendHeader() {
+function appendHeader() {
 	var header = id( "qunit-header" );
 
 	if ( header ) {
@@ -2553,7 +2553,7 @@ function mainendHeader() {
 	}
 }
 
-function mainendBanner() {
+function appendBanner() {
 	var banner = id( "qunit-banner" );
 
 	if ( banner ) {
@@ -2561,7 +2561,7 @@ function mainendBanner() {
 	}
 }
 
-function mainendTestResults() {
+function appendTestResults() {
 	var tests = id( "qunit-tests" ),
 		result = id( "qunit-testresult" );
 
@@ -2586,15 +2586,15 @@ function storeFixture() {
 	}
 }
 
-function mainendUserAgent() {
+function appendUserAgent() {
 	var userAgent = id( "qunit-userAgent" );
 	if ( userAgent ) {
 		userAgent.innerHTML = "";
-		userAgent.mainendChild( document.createTextNode( navigator.userAgent ) );
+		userAgent.appendChild( document.createTextNode( navigator.userAgent ) );
 	}
 }
 
-function mainendTestsList( modules ) {
+function appendTestsList( modules ) {
 	var i, l, x, z, test, moduleObj;
 
 	for ( i = 0, l = modules.length; i < l; i++ ) {
@@ -2607,12 +2607,12 @@ function mainendTestsList( modules ) {
 		for ( x = 0, z = moduleObj.tests.length; x < z; x++ ) {
 			test = moduleObj.tests[ x ];
 
-			mainendTest( test.name, test.testId, moduleObj.name );
+			appendTest( test.name, test.testId, moduleObj.name );
 		}
 	}
 }
 
-function mainendTest( name, testId, moduleName ) {
+function appendTest( name, testId, moduleName ) {
 	var title, rerunTrigger, testBlock, assertList,
 		tests = id( "qunit-tests" );
 
@@ -2628,16 +2628,16 @@ function mainendTest( name, testId, moduleName ) {
 	rerunTrigger.href = setUrl({ testId: testId });
 
 	testBlock = document.createElement( "li" );
-	testBlock.mainendChild( title );
-	testBlock.mainendChild( rerunTrigger );
+	testBlock.appendChild( title );
+	testBlock.appendChild( rerunTrigger );
 	testBlock.id = "qunit-test-output-" + testId;
 
 	assertList = document.createElement( "ol" );
 	assertList.className = "qunit-assert-list";
 
-	testBlock.mainendChild( assertList );
+	testBlock.appendChild( assertList );
 
-	tests.mainendChild( testBlock );
+	tests.appendChild( testBlock );
 }
 
 // HTML Reporter initialization and load
@@ -2656,12 +2656,12 @@ QUnit.begin(function( details ) {
 			"<ol id='qunit-tests'></ol>";
 	}
 
-	mainendHeader();
-	mainendBanner();
-	mainendTestResults();
-	mainendUserAgent();
-	mainendToolbar();
-	mainendTestsList( details.modules );
+	appendHeader();
+	appendBanner();
+	appendTestResults();
+	appendUserAgent();
+	appendToolbar();
+	appendTestsList( details.modules );
 	toolbarModuleFilter();
 
 	if ( qunit && config.hidepassed ) {
@@ -2741,7 +2741,7 @@ QUnit.testStart(function( details ) {
 	} else {
 
 		// Report later registered tests
-		mainendTest( details.name, details.testId, details.module );
+		appendTest( details.name, details.testId, details.module );
 	}
 
 	running = id( "qunit-testresult" );
@@ -2801,7 +2801,7 @@ QUnit.log(function( details ) {
 	assertLi = document.createElement( "li" );
 	assertLi.className = details.result ? "pass" : "fail";
 	assertLi.innerHTML = message;
-	assertList.mainendChild( assertLi );
+	assertList.appendChild( assertLi );
 });
 
 QUnit.testDone(function( details ) {
