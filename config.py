@@ -14,7 +14,7 @@ import os
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))  
 
 # Instead of editing this file to specify a host, you can just edit your /etc/hosts.
-SQL_HOST = "flaskfiredb"
+SQL_HOST = "localhost"
 SQL_PORT = 3306
 SQL_USERNAME = "root"
 SQL_PASSWORD = ""
